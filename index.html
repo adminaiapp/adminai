@@ -187,7 +187,7 @@ async function generate(){
    button.disabled=false;
    button.innerHTML=originalText;
  }
-
+}
 function clearForm(){document.querySelectorAll("input,textarea").forEach((e)=>{if(e.id!=="price"&&e.id!=="qty"&&e.id!=="discount"&&e.id!=="tax")e.value=""});document.getElementById("price").value=0;document.getElementById("qty").value=1;generate()}
 function sendEmail(){const e=document.getElementById("email").value;if(!e){alert("Agrega primero el email del cliente.");return}location.href="mailto:"+encodeURIComponent(e)+"?subject="+encodeURIComponent("Tu cotización de Mi Negocio")}
 generate();
