@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdminAI — MVP</title>
+<style>
+:root{--navy:#071a3d;--blue:#315cf5;--purple:#6b3df5;--bg:#f5f7fc;--text:#13203a;--muted:#68738a}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.side{width:250px;background:linear-gradient(180deg,#061735,#0b2450);color:white;padding:24px 18px}
+.logo{font-size:28px;font-weight:800;margin-bottom:5px}.logo span{color:#5c7cff}.tag{font-size:12px;color:#d8e1f5;margin-bottom:30px}
+.nav{display:flex;gap:12px;align-items:center;padding:13px 14px;border-radius:10px;margin:6px 0;color:#eaf0ff}.nav.active{background:#315cf5}.plan{margin-top:30px;padding:16px;border-radius:14px;background:#102e61}.plan button{width:100%;padding:11px;border:0;border-radius:9px;background:#315cf5;color:white;font-weight:700}
+.main{flex:1;padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.crumb{color:#315cf5;font-weight:700}.top h1{font-size:28px;margin:8px 0}
+.grid{display:grid;grid-template-columns:1fr 1.15fr;gap:22px}.card{background:white;border:1px solid #e5e9f2;border-radius:16px;padding:22px;box-shadow:0 5px 20px #1c31520b}.card h2{margin:0 0 18px;font-size:19px}.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{font-size:13px;font-weight:700;display:block;margin-bottom:7px}input,textarea,select{width:100%;padding:12px;border:1px solid #d7ddea;border-radius:9px;font-size:14px;background:#fff}textarea{min-height:110px;resize:vertical}
+.actions{margin-top:18px;display:flex;gap:10px;align-items:center}.btn{border:0;border-radius:10px;padding:12px 17px;font-weight:700;cursor:pointer}.primary{background:linear-gradient(90deg,#315cf5,#713cf5);color:#fff}.secondary{background:#eef2ff;color:#315cf5}.ghost{background:transparent;color:#68738a}
+.preview{min-height:560px}.quote{border:1px solid #e0e5ef;border-radius:12px;padding:24px;background:#fff}.quotehead{display:flex;justify-content:space-between;border-bottom:1px solid #e7eaf1;padding-bottom:18px}.quote h3{margin:0 0 5px;font-size:20px}.quote .right{text-align:right}.quote table{width:100%;border-collapse:collapse;margin-top:22px}.quote th{background:#315cf5;color:#fff;padding:10px;text-align:left;font-size:12px}.quote td{padding:11px;border-bottom:1px solid #edf0f5;font-size:13px}.totals{margin-left:auto;width:250px;margin-top:16px}.totals div{display:flex;justify-content:space-between;padding:5px}.total{background:#eaf0ff;padding:12px!important;border-radius:8px;font-weight:800;color:#315cf5;font-size:18px}.status{display:inline-block;background:#dff7ea;color:#16834c;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:700}.note{margin-top:18px;color:#68738a;font-size:12px}
+@media(max-width:900px){.side{display:none}.main{padding:20px}.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="logo">🤖 Admin<span>AI</span></div>
+  <div class="tag">Tu asistente administrativo inteligente</div>
+  <div class="nav">⌂ &nbsp; Dashboard</div><div class="nav active">🧾 &nbsp; Cotizaciones</div>
+  <div class="nav">▣ &nbsp; Facturas</div><div class="nav">▤ &nbsp; Documentos</div><div class="nav">♙ &nbsp; Clientes</div>
+  <div class="nav">▥ &nbsp; Ventas</div><div class="nav">⌁ &nbsp; Gastos</div><div class="nav">◇ &nbsp; Productos</div>
+  <div class="nav">◔ &nbsp; Reportes</div>
+  <div class="plan"><small>Plan actual</small><h3>BÁSICO</h3><p style="font-size:12px">35 documentos restantes</p><button>Mejorar mi plan</button></div>
+</aside>
+<main class="main">
+  <div class="top">
+    <div><div class="crumb">Cotizaciones › Nueva cotización</div><h1>✨ Crear cotización con IA</h1><div style="color:var(--muted)">Completa la información y genera una cotización profesional.</div></div>
+    <div>👩🏻‍💼 <b>Maria Garcia</b></div>
+  </div>
+  <div class="grid">
+    <section class="card">
+      <h2>1. Información de la cotización</h2>
+      <div class="form">
+        <div><label>Cliente *</label><input id="client" value="Maria Boutique"></div>
+        <div><label>Email del cliente</label><input id="email" value="maria@boutique.com"></div>
+        <div class="full"><label>Descripción de productos o servicios *</label><textarea id="desc">20 camisas para dama, diferentes colores y tallas.</textarea></div>
+        <div><label>Precio unitario *</label><input id="price" type="number" value="25" min="0" step=".01"></div>
+        <div><label>Cantidad *</label><input id="qty" type="number" value="20" min="1"></div>
+        <div><label>Descuento %</label><input id="discount" type="number" value="0" min="0"></div>
+        <div><label>Impuesto %</label><input id="tax" type="number" value="16" min="0"></div>
+        <div><label>Moneda</label><select id="currency"><option value="$">USD — Dólar</option><option value="€">EUR — Euro</option><option value="COP">COP — Peso colombiano</option></select></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" onclick="generate()">✨ Generar cotización con IA</button>
+        <button class="btn ghost" onclick="clearForm()">Limpiar</button>
+      </div>
+      <div id="aiNote" class="note">Demo MVP: el botón genera el documento automáticamente. En la siguiente etapa conectaremos un modelo de IA real de forma segura desde un servidor.</div>
+    </section>
+
+    <section class="card preview">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h2>2. Cotización generada</h2><span class="status">Lista</span></div>
+      <div id="preview" class="quote"></div>
+      <div class="actions">
+        <button class="btn secondary" onclick="window.print()">🖨️ Descargar / imprimir PDF</button>
+        <button class="btn secondary" onclick="sendEmail()">✉️ Preparar email</button>
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+<script>
+function money(n,c){return c==="COP"?"COP "+n.toLocaleString("es-CO",{maximumFractionDigits:0}):c+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function generate(){
+ const client=document.getElementById("client").value||"Cliente";
+ const email=document.getElementById("email").value;
+ const desc=document.getElementById("desc").value||"Producto o servicio";
+ const price=Number(document.getElementById("price").value)||0;
+ const qty=Number(document.getElementById("qty").value)||1;
+ const discount=Number(document.getElementById("discount").value)||0;
+ const tax=Number(document.getElementById("tax").value)||0;
+ const c=document.getElementById("currency").value;
+ const subtotal=price*qty, disc=subtotal*discount/100, taxable=subtotal-disc, taxAmt=taxable*tax/100, total=taxable+taxAmt;
+ const today=new Date().toLocaleDateString("es-CO");
+ document.getElementById("preview").innerHTML=`
+  <div class="quotehead"><div><h3>🛍️ Mi Negocio</h3><div style="color:#68738a">Tu negocio, tu marca</div><div style="margin-top:12px;font-size:12px">📍 Tu dirección<br>☎️ Tu teléfono<br>✉️ tu@email.com</div></div>
+  <div class="right"><h2 style="margin:0;color:#315cf5">COTIZACIÓN</h2><b>#COT-${Date.now().toString().slice(-6)}</b><div style="margin-top:12px;font-size:12px">Fecha: ${today}<br>Válida por 15 días</div></div></div>
+  <div style="margin-top:20px"><b>DATOS DEL CLIENTE</b><div style="margin-top:6px">${client}<br>${email||"Sin email"}</div></div>
+  <table><tr><th>Descripción</th><th>Cantidad</th><th>Precio unitario</th><th>Total</th></tr>
+  <tr><td>${desc}</td><td>${qty}</td><td>${money(price,c)}</td><td>${money(subtotal,c)}</td></tr></table>
+  <div class="totals"><div><span>Subtotal</span><b>${money(subtotal,c)}</b></div>
+  <div><span>Descuento</span><b>-${money(disc,c)}</b></div><div><span>Impuesto (${tax}%)</span><b>${money(taxAmt,c)}</b></div>
+  <div class="total"><span>Total</span><span>${money(total,c)}</span></div></div>
+  <div class="note">Condiciones: precios sujetos a confirmación. Tiempo de entrega según disponibilidad. ¡Gracias por tu preferencia!</div>`;
+}
+function clearForm(){document.querySelectorAll("input,textarea").forEach((e)=>{if(e.id!=="price"&&e.id!=="qty"&&e.id!=="discount"&&e.id!=="tax")e.value=""});document.getElementById("price").value=0;document.getElementById("qty").value=1;generate()}
+function sendEmail(){const e=document.getElementById("email").value;if(!e){alert("Agrega primero el email del cliente.");return}location.href="mailto:"+encodeURIComponent(e)+"?subject="+encodeURIComponent("Tu cotización de Mi Negocio")}
+generate();
+</script>
+</body>
+</html>
